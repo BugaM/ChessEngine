@@ -3,13 +3,14 @@ from math import fabs
 from game_logic import PLAYER_MOVE, RANDOM_MOVE, ALFA_BETA_MOVE
 from constants import EPSILON
 import random
-import board_evaluation
 import chess
+import board_evaluation
 
 
 def player_move():
     # TODO
     return
+
 
 def random_move(board, eval_mode, max_depth):
     """
@@ -21,6 +22,7 @@ def random_move(board, eval_mode, max_depth):
     :rtype: chess.Move.
     """
     return random.choice(list(board.legal_moves))
+
 
 def negamax(board, eval_mode, alpha, beta, depth_left):
     """
@@ -77,4 +79,21 @@ def alfa_beta_prunning(board, eval_mode, max_depth):
             best_moves.append(move)
     return random.choice(best_moves)
 
+
+def stockfish_move(board, depth):
+    best_move = random.choice(list(board.legal_moves))
+    test_board = board.copy()
+    test_board.push_uci(best_move.uci())
+    best_value = board_evaluation.stockfish_evaluation(test_board, depth, board.turn)
+    for move in board.legal_moves:
+        test_board = board.copy()
+        test_board.push_uci(move.uci())
+        value = board_evaluation.stockfish_evaluation(test_board, depth, board.turn)
+        if value > best_value:
+            best_value = value
+            best_move = move
+    return best_move
+
+
 selection_mode = {PLAYER_MOVE: player_move, RANDOM_MOVE: random_move, ALFA_BETA_MOVE: alfa_beta_prunning}
+

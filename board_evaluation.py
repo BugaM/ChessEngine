@@ -1,7 +1,9 @@
 import chess
+from chess.engine import SimpleEngine
 from constants import piece_value
 from constants import outcome_value
 from game_logic import MATERIAL_EVAL
+
 
 def material_evaluation(board):
     """
@@ -29,4 +31,18 @@ def material_evaluation(board):
             evaluation -= piece_value[piece.piece_type]
     return evaluation
 
+
+def stockfish_evaluation(board, depth, side):
+    with chess.engine.SimpleEngine.popen_uci('stockfish/stockfish_14_x64') as sf:
+        result = sf.analyse(board, chess.engine.Limit(depth=depth))
+        if side == chess.WHITE:
+            evaluation = result['score'].white().score(mate_score=100000)
+        else:
+            evaluation = result['score'].black().score(mate_score=100000)
+        return evaluation
+
+
 evaluation_mode = {MATERIAL_EVAL: material_evaluation}
+
+
+

@@ -11,6 +11,11 @@ def random_player(board):
 def alpha_beta_player(board):
     return move_selection.alfa_beta_prunning(board, game_logic.MATERIAL_EVAL, game_logic.max_depth)
 
+def stockfish_greedy(board):
+    move = move_selection.stockfish_move(board, 10)
+    return move.uci()
+
+
 def who(player):
     return "White" if player == chess.WHITE else "Black"
 
