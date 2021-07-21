@@ -8,11 +8,13 @@ def random_player(board):
     move = random.choice(list(board.legal_moves))
     return move.uci()
 
+
 def alpha_beta_player(board):
     return move_selection.alfa_beta_prunning(board, game_logic.MATERIAL_EVAL, game_logic.max_depth)
 
+
 def stockfish_greedy(board):
-    move = move_selection.stockfish_move(board, 10)
+    move = move_selection.stockfish_move(board, game_logic.MATERIAL_EVAL, game_logic.max_depth)
     return move.uci()
 
 

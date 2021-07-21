@@ -1,6 +1,6 @@
 from math import inf
 from math import fabs
-from game_logic import PLAYER_MOVE, RANDOM_MOVE, ALFA_BETA_MOVE
+from game_logic import PLAYER_MOVE, RANDOM_MOVE, ALFA_BETA_MOVE, STOCKFISH_MOVE
 from constants import EPSILON
 import random
 import chess
@@ -103,7 +103,17 @@ def alfa_beta_prunning(board, eval_mode, max_depth):
     return random.choice(best_moves)
 
 
-def stockfish_move(board, depth):
+def stockfish_move(board, eval_mode, depth):
+    """
+        Chooses the best move according to stockfish.
+
+        :param board: current chess board.
+        :type board: chess.Board.
+        :param eval_mode: which function to use for evaluation.
+        :type eval_mode: int
+        :return: stockfish selected move.
+        :rtype: chess.Move.
+    """
     best_move = random.choice(list(board.legal_moves))
     test_board = board.copy()
     test_board.push_uci(best_move.uci())
