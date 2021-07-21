@@ -1,6 +1,7 @@
 import chess
 from constants import piece_value
 from constants import outcome_value
+from game_logic import MATERIAL_EVAL
 
 def material_evaluation(board):
     """
@@ -27,3 +28,5 @@ def material_evaluation(board):
         else:
             evaluation -= piece_value[piece.piece_type]
     return evaluation
+
+evaluation_mode = {MATERIAL_EVAL: material_evaluation}
