@@ -8,5 +8,7 @@ max_depth = 3
 PLAYER_MOVE = 0
 RANDOM_MOVE = 1
 ALFA_BETA_MOVE = 2
+STOCKFISH_MOVE = 3
 # Evaluation Function Options
 MATERIAL_EVAL = 0
+STOCKFISH_EVAL = 1
