@@ -8,6 +8,18 @@ import board_evaluation
 
 
 def player_move():
+    """
+    Lets the human player choose a legal move.
+
+    :param board: current chess board.
+    :type board: chess.Board.
+    :param eval_mode: unused value for compatibility.
+    :type eval_mode: int key for dictionary.
+    :param max_depth: unused value for compatibility.
+    :type max_depth: int.
+    :return: selected move.
+    :rtype: chess.Move.
+    """
     # TODO
     return
 
@@ -18,6 +30,10 @@ def random_move(board, eval_mode, max_depth):
 
     :param board: current chess board.
     :type board: chess.Board.
+    :param eval_mode: unused value for compatibility.
+    :type eval_mode: int key for dictionary.
+    :param max_depth: unused value for compatibility.
+    :type max_depth: int.
     :return: selected random move.
     :rtype: chess.Move.
     """
@@ -30,9 +46,14 @@ def negamax(board, eval_mode, alpha, beta, depth_left):
     
     :param board: current chess board.
     :type board: chess.Board.
-    :param alpha: which function to use for evaluation.
-    :return: selected random move.
-    :rtype: chess.Move.
+    :param alpha: worst case scenario for the agent.
+    :type alpha: float.
+    :param beta: best case scenario for the agent's opponent.
+    :type beta: flotat.
+    :param depth_left: the depth left to reach the maximum depth.
+    :type depth_left: int.
+    :return: value for the state.
+    :rtype: float.
     """
     if depth_left == 0 or board.is_game_over():
         if board.turn == chess.WHITE:
@@ -57,8 +78,10 @@ def alfa_beta_prunning(board, eval_mode, max_depth):
     :param board: current chess board.
     :type board: chess.Board.
     :param eval_mode: which function to use for evaluation.
-    :type eval_mode: int
-    :return: selected random move.
+    :type eval_mode: int key for dictionary.
+    :param max_depth: max depth for the search tree.
+    :type max_depth: int.
+    :return: selected random best move.
     :rtype: chess.Move.
     """
     best_moves = []
