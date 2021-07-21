@@ -7,7 +7,7 @@ import chess
 import board_evaluation
 
 
-def player_move():
+def player_move(board, eval_mode, max_depth):
     """
     Lets the human player choose a legal move.
 
@@ -103,30 +103,33 @@ def alfa_beta_prunning(board, eval_mode, max_depth):
     return random.choice(best_moves)
 
 
-def stockfish_move(board, eval_mode, depth):
+def stockfish_move(board, eval_mode, max_depth):
     """
-        Chooses the best move according to stockfish.
+    Chooses the best move according to stockfish.
 
-        :param board: current chess board.
-        :type board: chess.Board.
-        :param eval_mode: which function to use for evaluation.
-        :type eval_mode: int
-        :return: stockfish selected move.
-        :rtype: chess.Move.
+    :param board: current chess board.
+    :type board: chess.Board.
+    :param eval_mode: unused value for compatibility.
+    :type eval_mode: int key for dictionary.
+    :param max_depth: max depth for the search tree.
+    :type max_depth: int.
+    :return: stockfish selected move.
+    :rtype: chess.Move.
     """
     best_move = random.choice(list(board.legal_moves))
     test_board = board.copy()
     test_board.push_uci(best_move.uci())
-    best_value = board_evaluation.stockfish_evaluation(test_board, depth, board.turn)
+    best_value = board_evaluation.stockfish_evaluation(test_board, max_depth, board.turn)
     for move in board.legal_moves:
         test_board = board.copy()
         test_board.push_uci(move.uci())
-        value = board_evaluation.stockfish_evaluation(test_board, depth, board.turn)
+        value = board_evaluation.stockfish_evaluation(test_board, max_depth, board.turn)
         if value > best_value:
             best_value = value
             best_move = move
     return best_move
 
 
-selection_mode = {PLAYER_MOVE: player_move, RANDOM_MOVE: random_move, ALFA_BETA_MOVE: alfa_beta_prunning}
+selection_mode = {PLAYER_MOVE: player_move, RANDOM_MOVE: random_move, ALFA_BETA_MOVE: alfa_beta_prunning,
+                  STOCKFISH_MOVE: stockfish_move}
 

@@ -12,8 +12,8 @@ def material_evaluation(board):
 
     :param board: current chess board.
     :type board: chess.Board.
-    :return: float.
-    :rtype: chess.Move.
+    :return: Evaluation of the state considering material and outcome alone.
+    :rtype: float.
     """
     if board.is_game_over():
         if board.outcome().winner != chess.BLACK:
@@ -32,21 +32,25 @@ def material_evaluation(board):
     return evaluation
 
 
-def stockfish_evaluation(board, depth, side):
+def stockfish_evaluation(board, side, depth=5):
     """
-        Evaluates advantage based on stockfish.
+    Evaluates advantage based on stockfish.
 
-        :param board: current chess board.
-        :type board: chess.Board.
-        :return: int.
-        :rtype: chess.Move.
-        """
+    :param board: Current chess board.
+    :type board: chess.Board.
+    :param side: Whoose turn it is.
+    :type side: chess.Color.
+    :param depth: Depth in which Stockfish analises the position.
+    :type depth: int.
+    :return: Evaluation of the state by stockfish.
+    :rtype: float.
+    """
     with chess.engine.SimpleEngine.popen_uci('stockfish/stockfish_14_x64') as sf:
         result = sf.analyse(board, chess.engine.Limit(depth=depth))
         if side == chess.WHITE:
-            evaluation = result['score'].white().score(mate_score=100000)
+            evaluation = result['score'].white().score(mate_score=outcome_value[chess.Termination.CHECKMATE])
         else:
-            evaluation = result['score'].black().score(mate_score=100000)
+            evaluation = result['score'].black().score(mate_score=outcome_value[chess.Termination.CHECKMATE])
         return evaluation
 
 
