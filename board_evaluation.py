@@ -2,7 +2,6 @@ import chess
 from chess.engine import SimpleEngine
 from constants import piece_value
 from constants import outcome_value
-from game_logic import MATERIAL_EVAL, STOCKFISH_EVAL
 
 
 def material_evaluation(board):
@@ -54,8 +53,9 @@ def stockfish_evaluation(board, side, depth=5):
         return evaluation
 
 
+# Evaluation Function Options
+MATERIAL_EVAL = 0
+STOCKFISH_EVAL = 1
+
 evaluation_mode = {MATERIAL_EVAL: material_evaluation,
                    STOCKFISH_EVAL: stockfish_evaluation}
-
-
-

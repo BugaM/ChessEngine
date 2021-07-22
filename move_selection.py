@@ -1,13 +1,15 @@
 from math import inf
 from math import fabs
-from game_logic import PLAYER_MOVE, RANDOM_MOVE, ALFA_BETA_MOVE, STOCKFISH_MOVE
 from constants import EPSILON
+from board_evaluation import stockfish_evaluation, evaluation_mode
+from input import square_input_from_mouse
 import random
 import chess
-import board_evaluation
 
 
-def player_move(board, eval_mode, max_depth):
+
+
+def human_move(board, eval_mode, max_depth): # TODO Promotions
     """
     Lets the human player choose a legal move.
 
@@ -20,8 +22,18 @@ def player_move(board, eval_mode, max_depth):
     :return: selected move.
     :rtype: chess.Move.
     """
-    # TODO
-    return
+    promotion = None
+    from_square = square_input_from_mouse()
+    to_square = square_input_from_mouse()
+    move = chess.Move(from_square, to_square, promotion)
+    move_is_legal = board.is_legal(move)
+    while not move_is_legal:
+        print("Move not legal, chose another one.")
+        from_square = square_input_from_mouse()
+        to_square = square_input_from_mouse()
+        move = chess.Move(from_square, to_square, promotion)
+        move_is_legal = board.is_legal(move)
+    return move
 
 
 def random_move(board, eval_mode, max_depth):
@@ -57,9 +69,9 @@ def negamax(board, eval_mode, alpha, beta, depth_left):
     """
     if depth_left == 0 or board.is_game_over():
         if board.turn == chess.WHITE:
-            return board_evaluation.evaluation_mode[eval_mode](board)
+            return evaluation_mode[eval_mode](board)
         else:
-            return -board_evaluation.evaluation_mode[eval_mode](board)
+            return -evaluation_mode[eval_mode](board)
     value = -inf
     for move in board.legal_moves:
         board.push(move)
@@ -119,17 +131,22 @@ def stockfish_move(board, eval_mode, max_depth):
     best_move = random.choice(list(board.legal_moves))
     test_board = board.copy()
     test_board.push_uci(best_move.uci())
-    best_value = board_evaluation.stockfish_evaluation(test_board, max_depth, board.turn)
+    best_value = stockfish_evaluation(test_board, max_depth, board.turn)
     for move in board.legal_moves:
         test_board = board.copy()
         test_board.push_uci(move.uci())
-        value = board_evaluation.stockfish_evaluation(test_board, max_depth, board.turn)
+        value = stockfish_evaluation(test_board, max_depth, board.turn)
         if value > best_value:
             best_value = value
             best_move = move
     return best_move
 
+# Move Selector Options
+HUMAN_MOVE = 0
+RANDOM_MOVE = 1
+ALFA_BETA_MOVE = 2
+STOCKFISH_MOVE = 3
 
-selection_mode = {PLAYER_MOVE: player_move, RANDOM_MOVE: random_move, ALFA_BETA_MOVE: alfa_beta_prunning,
+selection_mode = {HUMAN_MOVE: human_move, RANDOM_MOVE: random_move,
+                  ALFA_BETA_MOVE: alfa_beta_prunning,
                   STOCKFISH_MOVE: stockfish_move}
-
