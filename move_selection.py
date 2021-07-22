@@ -131,11 +131,11 @@ def greedy_move(board, eval_mode, max_depth):
     best_move = random.choice(list(board.legal_moves))
     test_board = board.copy()
     test_board.push_uci(best_move.uci())
-    best_value = evaluation_mode[eval_mode](test_board, max_depth)
+    best_value = evaluation_mode[eval_mode](test_board)
     for move in board.legal_moves:
         test_board = board.copy()
         test_board.push_uci(move.uci())
-        value = evaluation_mode[eval_mode](test_board, max_depth)
+        value = evaluation_mode[eval_mode](test_board)
         if (board.turn == chess.WHITE and value > best_value) or (board.turn == chess.BLACK and value < best_value):
             best_value = value
             best_move = move
