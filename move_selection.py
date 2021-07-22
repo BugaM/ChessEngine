@@ -102,7 +102,7 @@ def alfa_beta_prunning(board, eval_mode, max_depth):
     beta = inf
     for move in board.legal_moves:
         board.push(move)
-        value = negamax(board, eval_mode, alpha, beta, max_depth)
+        value = -negamax(board, eval_mode, -beta, -alpha, max_depth-1)
         board.pop()
         if value > alpha:
             alpha = value
@@ -112,6 +112,7 @@ def alfa_beta_prunning(board, eval_mode, max_depth):
             best_moves.append(move)
         elif fabs(best_value-value) < EPSILON:
             best_moves.append(move)
+    print(best_moves, " ", value)
     return random.choice(best_moves)
 
 
