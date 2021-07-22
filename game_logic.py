@@ -1,4 +1,4 @@
-from move_selection import HUMAN_MOVE, RANDOM_MOVE, ALFA_BETA_MOVE, STOCKFISH_MOVE
+from move_selection import HUMAN_MOVE, RANDOM_MOVE, ALFA_BETA_MOVE, GREEDY_MOVE
 from move_selection import selection_mode
 from board_evaluation import MATERIAL_EVAL, STOCKFISH_EVAL
 import chess

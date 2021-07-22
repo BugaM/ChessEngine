@@ -115,7 +115,7 @@ def alfa_beta_prunning(board, eval_mode, max_depth):
     return random.choice(best_moves)
 
 
-def stockfish_move(board, eval_mode, max_depth):
+def greedy_move(board, eval_mode, max_depth):
     """
     Chooses the best move according to stockfish.
 
@@ -131,12 +131,12 @@ def stockfish_move(board, eval_mode, max_depth):
     best_move = random.choice(list(board.legal_moves))
     test_board = board.copy()
     test_board.push_uci(best_move.uci())
-    best_value = stockfish_evaluation(test_board, max_depth, board.turn)
+    best_value = evaluation_mode[eval_mode](test_board, max_depth)
     for move in board.legal_moves:
         test_board = board.copy()
         test_board.push_uci(move.uci())
-        value = stockfish_evaluation(test_board, max_depth, board.turn)
-        if value > best_value:
+        value = evaluation_mode[eval_mode](test_board, max_depth)
+        if (board.turn == chess.WHITE and value > best_value) or (board.turn == chess.BLACK and value < best_value):
             best_value = value
             best_move = move
     return best_move
@@ -145,8 +145,8 @@ def stockfish_move(board, eval_mode, max_depth):
 HUMAN_MOVE = 0
 RANDOM_MOVE = 1
 ALFA_BETA_MOVE = 2
-STOCKFISH_MOVE = 3
+GREEDY_MOVE = 3
 
 selection_mode = {HUMAN_MOVE: human_move, RANDOM_MOVE: random_move,
                   ALFA_BETA_MOVE: alfa_beta_prunning,
-                  STOCKFISH_MOVE: stockfish_move}
+                  GREEDY_MOVE: greedy_move}

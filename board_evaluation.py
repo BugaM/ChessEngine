@@ -25,7 +25,7 @@ def material_evaluation(board):
     return evaluation
 
 
-def stockfish_evaluation(board, side, depth=5):
+def stockfish_evaluation(board, depth=5):
     """
     Evaluates advantage based on stockfish.
 
@@ -40,10 +40,7 @@ def stockfish_evaluation(board, side, depth=5):
     """
     with chess.engine.SimpleEngine.popen_uci('stockfish/stockfish_14_x64') as sf:
         result = sf.analyse(board, chess.engine.Limit(depth=depth))
-        if side == chess.WHITE:
-            evaluation = result['score'].white().score(mate_score=outcome_value[chess.Termination.CHECKMATE])
-        else:
-            evaluation = result['score'].black().score(mate_score=outcome_value[chess.Termination.CHECKMATE])
+        evaluation = result['score'].white().score(mate_score=outcome_value[chess.Termination.CHECKMATE])
         return evaluation
 
 
