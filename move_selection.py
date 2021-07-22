@@ -78,12 +78,12 @@ def negamax(board, eval_mode, alpha, beta, depth_left):
         value = max(value, -negamax(board, eval_mode, -beta, -alpha, depth_left-1))
         board.pop()
         alpha = max(alpha, value)
-        if beta >= alpha:
+        if alpha >= beta:
             break
     return value
 
 
-def alfa_beta_prunning(board, eval_mode, max_depth):
+def alpha_beta_prunning(board, eval_mode, max_depth):
     """
     Chooses a random best move according to the search tree of max_depth and evaluation function.
 
@@ -112,7 +112,6 @@ def alfa_beta_prunning(board, eval_mode, max_depth):
             best_moves.append(move)
         elif fabs(best_value-value) < EPSILON:
             best_moves.append(move)
-    print(best_moves, " ", value)
     return random.choice(best_moves)
 
 
@@ -145,9 +144,9 @@ def greedy_move(board, eval_mode, max_depth):
 # Move Selector Options
 HUMAN_MOVE = 0
 RANDOM_MOVE = 1
-ALFA_BETA_MOVE = 2
+ALPHA_BETA_MOVE = 2
 GREEDY_MOVE = 3
 
 selection_mode = {HUMAN_MOVE: human_move, RANDOM_MOVE: random_move,
-                  ALFA_BETA_MOVE: alfa_beta_prunning,
+                  ALPHA_BETA_MOVE: alpha_beta_prunning,
                   GREEDY_MOVE: greedy_move}

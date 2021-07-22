@@ -1,4 +1,4 @@
-from move_selection import HUMAN_MOVE, RANDOM_MOVE, ALFA_BETA_MOVE, GREEDY_MOVE
+from move_selection import HUMAN_MOVE, RANDOM_MOVE, ALPHA_BETA_MOVE, GREEDY_MOVE
 from move_selection import selection_mode
 from board_evaluation import MATERIAL_EVAL, STOCKFISH_EVAL
 import chess
@@ -12,7 +12,7 @@ PLAYER_RANDOM = 2
 # Game Settings
 white_player_human = False
 black_player_human = False
-max_depth = 3
+max_depth = 4
 
 class ChessPlayer:
     """
@@ -63,7 +63,7 @@ class ChessPlayer:
 
             
 player1 = ChessPlayer(PLAYER_RANDOM, HUMAN_MOVE, MATERIAL_EVAL)
-player2 = ChessPlayer(player1.get_oponent_color(), ALFA_BETA_MOVE, MATERIAL_EVAL)
+player2 = ChessPlayer(player1.get_oponent_color(), ALPHA_BETA_MOVE, MATERIAL_EVAL)
 
 
 def make_move(board):
