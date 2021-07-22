@@ -1,15 +1,13 @@
 from math import inf
 from math import fabs
 from constants import EPSILON
-from board_evaluation import stockfish_evaluation, evaluation_mode
+from board_evaluation import evaluation_mode
 from input import square_input_from_mouse
 import random
 import chess
 
 
-
-
-def human_move(board, eval_mode, max_depth): # TODO Promotions
+def human_move(board, eval_mode, max_depth):
     """
     Lets the human player choose a legal move.
 
@@ -22,17 +20,26 @@ def human_move(board, eval_mode, max_depth): # TODO Promotions
     :return: selected move.
     :rtype: chess.Move.
     """
-    promotion = None
-    from_square = square_input_from_mouse()
-    to_square = square_input_from_mouse()
-    move = chess.Move(from_square, to_square, promotion)
-    move_is_legal = board.is_legal(move)
+    from_square = square_input_from_mouse(board)
+    if from_square == None:
+        return None
+    to_square = square_input_from_mouse(board)
+    if to_square == None:
+        return None
+    try:
+        move = board.find_move(from_square, to_square)
+        move_is_legal = True
+    except:
+        move_is_legal = False
     while not move_is_legal:
         print("Move not legal, chose another one.")
-        from_square = square_input_from_mouse()
-        to_square = square_input_from_mouse()
-        move = chess.Move(from_square, to_square, promotion)
-        move_is_legal = board.is_legal(move)
+        from_square = square_input_from_mouse(board)
+        to_square = square_input_from_mouse(board)
+        try:
+            move = board.find_move(from_square, to_square)
+            move_is_legal = True
+        except:
+            move_is_legal = False
     return move
 
 

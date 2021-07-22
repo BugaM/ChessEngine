@@ -1,16 +1,19 @@
 from constants import FREQUENCY
 import utils
 import game_logic
-import pygame
+import pygame          
 
-def square_input_from_mouse(): # TODO Find a way for it not to "freeze" pygame
+
+def square_input_from_mouse(board):
     """
     Gets a square from a left mouse click in the board.
 
+    :param board: Board in which chess is being played.
+    :type board: chess.Board.
     :return: The square that was clicked.
     :rtype: chess.Square.
     """
-    clock = clock = pygame.time.Clock()
+    clock = pygame.time.Clock()
     while True:
         clock.tick(FREQUENCY)
         for event in pygame.event.get():
@@ -18,8 +21,13 @@ def square_input_from_mouse(): # TODO Find a way for it not to "freeze" pygame
                 mouse_position = pygame.mouse.get_pos()
                 if utils.mouse_in_chessboard(mouse_position):
                     return utils.get_square_from_pos(mouse_position)
-            elif event.type == pygame.QUIT: # TODO Improve this
-                pygame.quit()
+            elif event.type == pygame.QUIT:
+                game_logic.running[0] = False
+                return None
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    game_logic.reset_board(board)
+                    return None
     
 
 
@@ -34,10 +42,9 @@ def game_input(board):
     """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            return False
+            game_logic.running[0] = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
-                board = game_logic.reset_board()
+                game_logic.reset_board(board)
             elif event.key == pygame.K_ESCAPE:
                 square_input_from_mouse()
-    return True

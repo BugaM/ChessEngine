@@ -1,7 +1,7 @@
 from constants import WINDOW_LENGTH, WINDOW_HEIGHT, FREQUENCY
 from graphics import display_screen
 from input import game_input
-from game_logic import make_move
+from game_logic import make_move, running
 import pygame
 import chess
 
@@ -15,14 +15,13 @@ def start_game():
     pygame.display.set_caption("Chess Engine by Eric Guerra & Marcelo Buga")
     clock = pygame.time.Clock()
     font = pygame.font.Font('freesansbold.ttf', 32)
-    running = True
-    board = chess.Board(chess.STARTING_BOARD_FEN)
-    while running:
+    board = chess.Board()
+    while running[0]:
         clock.tick(FREQUENCY)
         display_screen(board, screen)
         if not board.is_game_over():
             make_move(board)
-        running = game_input(board)
+        game_input(board)
     pygame.quit()
 
 if __name__ == "__main__":

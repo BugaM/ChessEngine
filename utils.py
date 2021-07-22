@@ -37,7 +37,7 @@ def random_player(board):
 
 
 def alpha_beta_player(board):
-    return move_selection.alfa_beta_prunning(board, game_logic.MATERIAL_EVAL, game_logic.max_depth)
+    return move_selection.alfa_beta_prunning(board, game_logic.MATERIAL_EVAL, game_logic.max_depth).uci()
 
 
 def stockfish_greedy(board):

@@ -10,6 +10,7 @@ PLAYER_WHITE = 1
 PLAYER_RANDOM = 2
 
 # Game Settings
+running = [True]
 white_player_human = False
 black_player_human = False
 max_depth = 4
@@ -62,7 +63,7 @@ class ChessPlayer:
         return selection_mode[self.move_selec](board, self.eval_func, max_depth)
 
             
-player1 = ChessPlayer(PLAYER_RANDOM, HUMAN_MOVE, MATERIAL_EVAL)
+player1 = ChessPlayer(PLAYER_WHITE, HUMAN_MOVE, MATERIAL_EVAL)
 player2 = ChessPlayer(player1.get_oponent_color(), ALPHA_BETA_MOVE, MATERIAL_EVAL)
 
 
@@ -74,20 +75,22 @@ def make_move(board):
     :type board: chess.Board.
     """
     if board.turn == player1.color:
-        board.push(player1.get_player_move(board))
+        move = player1.get_player_move(board)
     else:
-        board.push(player2.get_player_move(board))
+        move = player2.get_player_move(board)
+    if move != None:
+        board.push(move)
 
 
-def reset_board(): # TODO Not working
+def reset_board(board):
     """
     Resets the board to the inital positon.
 
-    :return: Reset board.
+    :param board: Board to be reset.
     :type board: chess.Board.
     """
     global player1
     global player2
     player1.color = player1.get_color()
     player2.color = player1.get_oponent_color()
-    return chess.Board(chess.STARTING_BOARD_FEN)
+    board.reset()
