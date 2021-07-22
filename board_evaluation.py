@@ -1,7 +1,6 @@
 import chess
 from chess.engine import SimpleEngine
-from constants import piece_value
-from constants import outcome_value
+from constants import piece_value, outcome_value, chess_pieces
 
 
 def material_evaluation(board):
@@ -20,14 +19,9 @@ def material_evaluation(board):
         else:
             return -outcome_value[board.outcome().termination]
     evaluation = 0
-    for square in chess.SQUARES:
-        piece = board.piece_at(square)
-        if piece == None:
-            continue
-        if piece.color == chess.WHITE:
-            evaluation += piece_value[piece.piece_type]
-        else:
-            evaluation -= piece_value[piece.piece_type]
+    for piece_type in chess_pieces:
+        evaluation += (piece_value[piece_type]
+                       *(len(board.pieces(piece_type, chess.WHITE)) - len(board.pieces(piece_type, chess.BLACK))))
     return evaluation
 
 
