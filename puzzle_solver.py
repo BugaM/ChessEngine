@@ -2,6 +2,8 @@ import csv
 import chess
 import random
 import game_logic
+import time
+import numpy as np
 
 
 def play_puzzle(fen, moves):
@@ -9,7 +11,7 @@ def play_puzzle(fen, moves):
     move_number = 0
     moves_made = 0
     misses = 0
-    player = game_logic.ChessPlayer(board.turn, game_logic.GREEDY_MOVE, game_logic.STOCKFISH_EVAL)
+    player = game_logic.ChessPlayer(board.turn, game_logic.ALPHA_BETA_MOVE, game_logic.MATERIAL_EVAL)
     while move_number < len(moves):
         next_move = chess.Move.from_uci(moves[move_number])
         board.push(next_move)
@@ -26,14 +28,28 @@ def play_puzzle(fen, moves):
 
 FEN = 1
 MOVES = 2
+
+# Number of path plannings used in the Monte Carlo analysis
+# num_iterations = 1
+# num_iterations = 10
+num_iterations = 100  # Monte Carlo
+
 with open('puzzles/puzzles.csv', mode='r') as db:
     csv_reader = csv.reader(db, delimiter=',')
     rows = list(csv_reader)
-    puzzle = rows[random.randint(0, len(rows))]
-    fen = puzzle[FEN]
-    moves = list(puzzle[MOVES].split(' '))
-    percentage = play_puzzle(fen, moves)
-    print(percentage)
+    random.seed(10)
+    score = np.zeros((num_iterations, 1))
+    times = np.zeros((num_iterations, 1))
+    for i in range(num_iterations):
+        puzzle = rows[random.randint(0, len(rows))]
+        fen = puzzle[FEN]
+        moves = list(puzzle[MOVES].split(' '))
+        tic = time.time()
+        score[i] = play_puzzle(fen, moves)
+        toc = time.time()
+        times[i] = toc - tic
     db.close()
-
-
+    
+# Print statistics
+print(r'Compute time: mean: {0}, std: {1}'.format(np.mean(times), np.std(times)))
+print(r'Score: mean: {0}, std: {1}'.format(np.mean(score), np.std(score)))
