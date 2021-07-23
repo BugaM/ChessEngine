@@ -149,7 +149,7 @@ def minimax(board, eval_mode, depth_left, side, alpha, beta):
     if depth_left == 0 or board.is_game_over():
         return evaluation_mode[eval_mode](board)
 
-    if board.turn is not side:  # check if this is right
+    if board.turn is side:
         max_evaluation = -inf
         for move in board.legal_moves:
             board.push(move)
