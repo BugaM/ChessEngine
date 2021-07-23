@@ -131,8 +131,6 @@ def display_screen(board, screen):
     :type board: chess.Board.
     :param screen: The screen in which the everything will be displayed.
     :type screen: pygame.Surface.
-    :param font: Font to display GUI.
-    :type font: pygame.Font
     """
     screen.fill(PYGAME_BLACK)
     display_board(board, screen)
@@ -141,6 +139,12 @@ def display_screen(board, screen):
 
 def display_options(board, screen):
     """
+    Displays the options menu.
+
+    :param board: The chessboard in which the game is being played.
+    :type board: chess.Board.
+    :param screen: The screen in which the everything will be displayed.
+    :type screen: pygame.Surface.
     """
     clock = pygame.time.Clock()
     options_running[0] = True

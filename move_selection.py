@@ -18,6 +18,8 @@ def human_move(board, eval_mode, max_depth, screen):
     :type eval_mode: int key for dictionary.
     :param max_depth: unused value for compatibility.
     :type max_depth: int.
+    :param screen: Pygame screen.
+    :type screen: pygame.Surface.
     :return: selected move.
     :rtype: chess.Move.
     """
@@ -70,9 +72,9 @@ def negamax(board, eval_mode, alpha, beta, depth_left):
     
     :param board: current chess board.
     :type board: chess.Board.
-    :param alpha: worst case scenario for the agent.
+    :param alpha: lower bound scenario for the agent.
     :type alpha: float.
-    :param beta: best case scenario for the agent's opponent.
+    :param beta: upper bound scenario for the agent's opponent.
     :type beta: flotat.
     :param depth_left: the depth left to reach the maximum depth.
     :type depth_left: int.
@@ -129,7 +131,7 @@ def alpha_beta_prunning(board, eval_mode, max_depth):
 
 def greedy_move(board, eval_mode, max_depth):
     """
-    Chooses the best move according to stockfish.
+    Chooses the greedy move, i. e, the one that will maximize the evaluation function next ply.
 
     :param board: current chess board.
     :type board: chess.Board.
@@ -137,7 +139,7 @@ def greedy_move(board, eval_mode, max_depth):
     :type eval_mode: int key for dictionary.
     :param max_depth: max depth for the search tree.
     :type max_depth: int.
-    :return: stockfish selected move.
+    :return: Greedy selected move.
     :rtype: chess.Move.
     """
     best_move = random.choice(list(board.legal_moves))

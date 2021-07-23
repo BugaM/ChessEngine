@@ -12,6 +12,8 @@ def square_input_from_mouse(board, screen):
 
     :param board: Board in which chess is being played.
     :type board: chess.Board.
+    :param screen: Pygame screen.
+    :type screen: pygame.Surface.
     :return: The square that was clicked.
     :rtype: chess.Square.
     """
@@ -41,6 +43,8 @@ def game_input(board, screen):
 
     :param board: Board in which chess is being played.
     :type board: chess.Board.
+    :param screen: Pygame screen.
+    :type screen: pygame.Surface.
     :return: If the pygame window should remain opened.
     :rtype: bool.
     """
@@ -55,6 +59,19 @@ def game_input(board, screen):
 
 def options_input(selected_option, selected_player, board):
     """
+    Controls the inputs in the options screen.
+
+    :param selected_player: Which player whose setting is selected.
+    :type selected_player: int.
+    :param selected_option: Which option setting is selected,
+    i. e, color, move selector and evaluation function.
+    :type selected_option: int.
+    :param board: Board in which chess is being played.
+    :type board: chess.Board.
+    :return selected_player: Updated selected player.
+    :rtype selected_player: int.
+    :return selected_option: Updated selected option.
+    :rtype selected_option: int.
     """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

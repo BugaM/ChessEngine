@@ -12,6 +12,12 @@ font = pygame.font.Font('freesansbold.ttf', FONT_SIZE)
 
 def not_color_setting(player_color_setting):
     """
+    Helps to get the correct name in a string for the color setting.
+
+    :param player_setting_selec: Which color setting the player's oponent has.
+    :type player_setting_selec: int.
+    :return: Corresponding string for the case.
+    :rtype: string
     """
     if player_color_setting == game_logic.PLAYER_BLACK:
         return game_logic.PLAYER_WHITE
@@ -23,6 +29,12 @@ def not_color_setting(player_color_setting):
 
 def color_setting_str(player_color_setting):
     """
+    Helps to get the correct name in a string for the color setting.
+
+    :param player_setting_selec: Which color setting the player has.
+    :type player_setting_selec: int.
+    :return: Corresponding string for the case.
+    :rtype: string
     """
     if player_color_setting == game_logic.PLAYER_BLACK:
         return "Black"
@@ -34,6 +46,12 @@ def color_setting_str(player_color_setting):
 
 def selec_setting_str(player_setting_selec):
     """
+    Helps to get the correct name in a string for selection mode.
+
+    :param player_setting_selec: Which selection mode the player follows.
+    :type player_setting_selec: int.
+    :return: Corresponding string for the case.
+    :rtype: string
     """
     if player_setting_selec == game_logic.HUMAN_MOVE:
         return "Human"
@@ -45,21 +63,33 @@ def selec_setting_str(player_setting_selec):
         return "Greedy AI"
 
 
-def eval_setting_str(player_setting_selec, eval_setting_str):
+def eval_setting_str(player_setting_selec, eval_setting):
     """
+    Helps to get the correct name in a string for each evaluation function and case.
+
+    :param player_setting_selec: Which selection mode the player follows.
+    :type player_setting_selec: int.
+    :param eval_setting: Which evaluation mode the player follows.
+    :type eval_setting: int.
+    :return: Corresponding string for the case.
+    :rtype: string
     """
     if (player_setting_selec == game_logic.HUMAN_MOVE
         or player_setting_selec == game_logic.RANDOM_MOVE):
         return "---"
     else:
-        if eval_setting_str == game_logic.MATERIAL_EVAL:
+        if eval_setting == game_logic.MATERIAL_EVAL:
             return "Material"
-        elif eval_setting_str == game_logic.STOCKFISH_EVAL:
+        elif eval_setting == game_logic.STOCKFISH_EVAL:
             return "Stockfish"
 
 
 def ilegal_move_gui(screen):
     """
+    Shows on screen if the move is ilegal.
+
+    :param screen: Screen in which the message should be printed.
+    :type screen: pygame.Surface.
     """
     ilegal1_str = "Ilegal move."
     ilegal1_message = font.render(ilegal1_str, True, PYGAME_WHITE)
@@ -81,7 +111,11 @@ def options_gui(screen, selected_option, selected_player):
 
     :param screen: Screen in which the messages should be printed.
     :type screen: pygame.Surface.
-    ::
+    :param selected_player: Which player whose setting is selected.
+    :type selected_player: int.
+    :param selected_option: Which option setting is selected,
+    i. e, color, move selector and evaluation function.
+    :type selected_option: int.
     """
     screen.fill(PYGAME_BLACK)
 

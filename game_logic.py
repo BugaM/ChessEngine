@@ -15,6 +15,16 @@ white_player_human = False
 black_player_human = False
 max_depth = 4
 
+# Help to change options
+MIN_COLOR = PLAYER_BLACK
+MAX_COLOR = PLAYER_RANDOM
+
+MIN_EVAL = MATERIAL_EVAL
+MAX_EVAL = STOCKFISH_EVAL
+
+MIN_SELEC = HUMAN_MOVE
+MAX_SELEC = GREEDY_MOVE
+
 class ChessPlayer:
     """
     Represents a chess player by its color, move selection policy and position evaluation function.
@@ -59,6 +69,13 @@ class ChessPlayer:
     def get_player_move(self, board, screen=None):
         """
         Gets the move made by the player by following the selected move policy with the selected evaluation.
+
+        :param board: Board in which the move is made.
+        :type board: chess.Board.
+        :param screen: Pygame screen.
+        :type screen: pygame.Surface.
+        :return: Move to be made by the player.
+        :rtype: chess.Move.
         """
         if self.move_selec == HUMAN_MOVE:
             return selection_mode[self.move_selec](board, self.eval_func, max_depth, screen)
@@ -75,6 +92,8 @@ def make_move(board, screen):
 
     :param board: Board in which the move is made.
     :type board: chess.Board.
+    :param screen: Pygame screen.
+    :type screen: pygame.Surface.
     """
     if board.turn == player1.color:
         move = player1.get_player_move(board, screen)
@@ -99,52 +118,72 @@ def reset_board(board):
 
 def increase_option(selected_player, selected_option):
     """
+    Changes the selected option setting to the right.
+
+    :param selected_player: Which player to change the setting.
+    :type selected_player: int.
+    :param selected_option: Which option to change the setting,
+    i. e, color, move selector and evaluation function.
+    :type selected_option: int.
     """
     global player1
     global player2
     if selected_option == 0: # Color
         if selected_player == 1:
-            player1.color_setting = min(player1.color_setting+1, PLAYER_RANDOM)
+            player1.color_setting = min(player1.color_setting+1, MAX_COLOR)
         else:
-            player1.color_setting = max(player1.color_setting-1, PLAYER_BLACK)
+            player1.color_setting = max(player1.color_setting-1, MIN_COLOR)
     elif selected_option == 1: # Selection Mode
         if selected_player == 1:
-            player1.move_selec = min(player1.move_selec+1, GREEDY_MOVE)
+            player1.move_selec = min(player1.move_selec+1, MAX_SELEC)
         else:
-            player2.move_selec = min(player2.move_selec+1, GREEDY_MOVE)
+            player2.move_selec = min(player2.move_selec+1, MAX_SELEC)
     else:
         if selected_player == 1:
-            player1.eval_func = min(player1.eval_func+1, STOCKFISH_EVAL)
+            player1.eval_func = min(player1.eval_func+1, MAX_EVAL)
         else:
-            player2.eval_func = min(player2.eval_func+1, STOCKFISH_EVAL)
+            player2.eval_func = min(player2.eval_func+1, MAX_EVAL)
 
 
 def decrease_option(selected_player, selected_option):
     """
+    Changes the selected option setting to the left.
+
+    :param selected_player: Which player to change the setting.
+    :type selected_player: int.
+    :param selected_option: Which option to change the setting,
+    i. e, color, move selector and evaluation function.
+    :type selected_option: int.
     """
     global player1
     global player2
     if selected_option == 0: # Color
         if selected_player == 2:
-            player1.color_setting = min(player1.color_setting+1, PLAYER_RANDOM)
+            player1.color_setting = min(player1.color_setting+1, MAX_COLOR)
         else:
-            player1.color_setting = max(player1.color_setting-1, PLAYER_BLACK)
+            player1.color_setting = max(player1.color_setting-1, MIN_COLOR)
     elif selected_option == 1: # Selection Mode
         if selected_player == 1:
-            player1.move_selec = max(player1.move_selec-1, HUMAN_MOVE)
+            player1.move_selec = max(player1.move_selec-1, MIN_SELEC)
         else:
-            player2.move_selec = max(player2.move_selec-1, HUMAN_MOVE)
+            player2.move_selec = max(player2.move_selec-1, MIN_SELEC)
     else:
         if selected_player == 1:
-            player1.eval_func = max(player1.eval_func-1, MATERIAL_EVAL)
+            player1.eval_func = max(player1.eval_func-1, MIN_EVAL)
         else:
-            player2.eval_func = max(player2.eval_func-1, MATERIAL_EVAL)
+            player2.eval_func = max(player2.eval_func-1, MIN_EVAL)
 
 def increase_depth():
+    """
+    Increases max depth by one.
+    """
     global max_depth
     max_depth += 1
 
 
 def decrease_depth():
+    """
+    Decreases max depth by one.
+    """
     global max_depth
     max_depth -= 1
