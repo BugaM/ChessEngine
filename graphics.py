@@ -1,9 +1,13 @@
-from constants import SQUARE_SIZE, PYGAME_BLACK, chess_pieces, chess_colors
+from constants import FREQUENCY, SQUARE_SIZE, PYGAME_BLACK, chess_pieces, chess_colors
 from utils import board_position
+import input
+import gui
 import chess
 import pygame
 
 MAX_RANK = 7
+
+options_running = [True]
 
 # Loading Assets
 board_background = pygame.image.load("assets/board.png")
@@ -127,7 +131,24 @@ def display_screen(board, screen):
     :type board: chess.Board.
     :param screen: The screen in which the everything will be displayed.
     :type screen: pygame.Surface.
+    :param font: Font to display GUI.
+    :type font: pygame.Font
     """
     screen.fill(PYGAME_BLACK)
     display_board(board, screen)
+    gui.game_gui(board, screen)
     pygame.display.flip()
+
+def display_options(board, screen):
+    """
+    """
+    clock = pygame.time.Clock()
+    options_running[0] = True
+    selected_option = 0
+    selected_player = 1
+    while options_running[0]:
+        clock.tick(FREQUENCY)
+        selected_option, selected_player = input.options_input(selected_option, selected_player, board)
+        gui.options_gui(screen, selected_option, selected_player)
+        pygame.display.flip()
+    display_screen(board, screen)

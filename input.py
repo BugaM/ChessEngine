@@ -1,10 +1,12 @@
 from constants import FREQUENCY
 import utils
+import graphics
 import game_logic
 import pygame          
 
+NUMBER_OF_OPTIONS = 3
 
-def square_input_from_mouse(board):
+def square_input_from_mouse(board, screen):
     """
     Gets a square from a left mouse click in the board.
 
@@ -28,10 +30,12 @@ def square_input_from_mouse(board):
                 if event.key == pygame.K_r:
                     game_logic.reset_board(board)
                     return None
+                elif event.key == pygame.K_ESCAPE:
+                    graphics.display_options(board, screen)
     
 
 
-def game_input(board):
+def game_input(board, screen):
     """
     Gets and controls the inputs from the keyboard and mouse while playing chess.
 
@@ -47,4 +51,37 @@ def game_input(board):
             if event.key == pygame.K_r:
                 game_logic.reset_board(board)
             elif event.key == pygame.K_ESCAPE:
-                square_input_from_mouse()
+                graphics.display_options(board, screen)
+
+def options_input(selected_option, selected_player, board):
+    """
+    """
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_logic.running[0] = False
+            graphics.options_running[0] = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                selected_option -= 1
+                if selected_option < 0:
+                    selected_option = NUMBER_OF_OPTIONS - 1
+            elif event.key == pygame.K_DOWN:
+                selected_option += 1
+                if selected_option >= NUMBER_OF_OPTIONS:
+                    selected_option = 0
+            elif event.key == pygame.K_LEFT:
+                game_logic.decrease_option(selected_player, selected_option)
+            elif event.key == pygame.K_RIGHT:
+                game_logic.increase_option(selected_player, selected_option)
+            elif event.key == pygame.K_1:
+                selected_player = 1
+            elif event.key == pygame.K_2:
+                selected_player = 2
+            elif event.key == pygame.K_ESCAPE:
+                game_logic.reset_board(board)
+                graphics.options_running[0] = False
+            elif event.key == pygame.K_EQUALS:
+                game_logic.increase_depth()
+            elif event.key == pygame.K_MINUS:
+                game_logic.decrease_depth()
+    return selected_option, selected_player

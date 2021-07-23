@@ -3,11 +3,12 @@ from math import fabs
 from constants import EPSILON
 from board_evaluation import evaluation_mode
 from input import square_input_from_mouse
+import gui
 import random
 import chess
 
 
-def human_move(board, eval_mode, max_depth):
+def human_move(board, eval_mode, max_depth, screen):
     """
     Lets the human player choose a legal move.
 
@@ -20,10 +21,10 @@ def human_move(board, eval_mode, max_depth):
     :return: selected move.
     :rtype: chess.Move.
     """
-    from_square = square_input_from_mouse(board)
+    from_square = square_input_from_mouse(board, screen)
     if from_square == None:
         return None
-    to_square = square_input_from_mouse(board)
+    to_square = square_input_from_mouse(board, screen)
     if to_square == None:
         return None
     try:
@@ -32,9 +33,13 @@ def human_move(board, eval_mode, max_depth):
     except:
         move_is_legal = False
     while not move_is_legal:
-        print("Move not legal, chose another one.")
-        from_square = square_input_from_mouse(board)
-        to_square = square_input_from_mouse(board)
+        gui.ilegal_move_gui(screen)
+        from_square = square_input_from_mouse(board, screen)
+        if from_square == None:
+            return None
+        to_square = square_input_from_mouse(board, screen)
+        if to_square == None:
+            return None
         try:
             move = board.find_move(from_square, to_square)
             move_is_legal = True
@@ -74,7 +79,7 @@ def negamax(board, eval_mode, alpha, beta, depth_left):
     :return: value for the state.
     :rtype: float.
     """
-    if depth_left == 0 or board.is_game_over():
+    if depth_left <= 0 or board.is_game_over():
         if board.turn == chess.WHITE:
             return evaluation_mode[eval_mode](board)
         else:

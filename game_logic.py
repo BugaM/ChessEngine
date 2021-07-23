@@ -38,7 +38,7 @@ class ChessPlayer:
 
     def get_color(self):
         """
-        Sets the player color according to setting. If random, choses sets a random color.
+        Sets the player color according to setting. If random, chooses sets a random color.
         """
         if self.color_setting == PLAYER_RANDOM:
             return random.choice([PLAYER_BLACK, PLAYER_WHITE])
@@ -48,7 +48,7 @@ class ChessPlayer:
 
     def get_oponent_color(self):
         """
-        Gets its oponents color.
+        Gets its oponent's color.
         """
         if self.color == PLAYER_BLACK:
             return PLAYER_WHITE
@@ -56,18 +56,20 @@ class ChessPlayer:
             return PLAYER_BLACK
     
 
-    def get_player_move(self, board):
+    def get_player_move(self, board, screen=None):
         """
         Gets the move made by the player by following the selected move policy with the selected evaluation.
         """
+        if self.move_selec == HUMAN_MOVE:
+            return selection_mode[self.move_selec](board, self.eval_func, max_depth, screen)
         return selection_mode[self.move_selec](board, self.eval_func, max_depth)
 
             
-player1 = ChessPlayer(PLAYER_WHITE, HUMAN_MOVE, MATERIAL_EVAL)
+player1 = ChessPlayer(PLAYER_RANDOM, HUMAN_MOVE, MATERIAL_EVAL)
 player2 = ChessPlayer(player1.get_oponent_color(), ALPHA_BETA_MOVE, MATERIAL_EVAL)
 
 
-def make_move(board):
+def make_move(board, screen):
     """
     Makes the move of the turn's player.
 
@@ -75,9 +77,9 @@ def make_move(board):
     :type board: chess.Board.
     """
     if board.turn == player1.color:
-        move = player1.get_player_move(board)
+        move = player1.get_player_move(board, screen)
     else:
-        move = player2.get_player_move(board)
+        move = player2.get_player_move(board, screen)
     if move != None:
         board.push(move)
 
@@ -94,3 +96,55 @@ def reset_board(board):
     player1.color = player1.get_color()
     player2.color = player1.get_oponent_color()
     board.reset()
+
+def increase_option(selected_player, selected_option):
+    """
+    """
+    global player1
+    global player2
+    if selected_option == 0: # Color
+        if selected_player == 1:
+            player1.color_setting = min(player1.color_setting+1, PLAYER_RANDOM)
+        else:
+            player1.color_setting = max(player1.color_setting-1, PLAYER_BLACK)
+    elif selected_option == 1: # Selection Mode
+        if selected_player == 1:
+            player1.move_selec = min(player1.move_selec+1, GREEDY_MOVE)
+        else:
+            player2.move_selec = min(player2.move_selec+1, GREEDY_MOVE)
+    else:
+        if selected_player == 1:
+            player1.eval_func = min(player1.eval_func+1, STOCKFISH_EVAL)
+        else:
+            player2.eval_func = min(player2.eval_func+1, STOCKFISH_EVAL)
+
+
+def decrease_option(selected_player, selected_option):
+    """
+    """
+    global player1
+    global player2
+    if selected_option == 0: # Color
+        if selected_player == 2:
+            player1.color_setting = min(player1.color_setting+1, PLAYER_RANDOM)
+        else:
+            player1.color_setting = max(player1.color_setting-1, PLAYER_BLACK)
+    elif selected_option == 1: # Selection Mode
+        if selected_player == 1:
+            player1.move_selec = max(player1.move_selec-1, HUMAN_MOVE)
+        else:
+            player2.move_selec = max(player2.move_selec-1, HUMAN_MOVE)
+    else:
+        if selected_player == 1:
+            player1.eval_func = max(player1.eval_func-1, MATERIAL_EVAL)
+        else:
+            player2.eval_func = max(player2.eval_func-1, MATERIAL_EVAL)
+
+def increase_depth():
+    global max_depth
+    max_depth += 1
+
+
+def decrease_depth():
+    global max_depth
+    max_depth -= 1
