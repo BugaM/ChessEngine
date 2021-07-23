@@ -129,6 +129,51 @@ def alpha_beta_prunning(board, eval_mode, max_depth):
     return random.choice(best_moves)
 
 
+def minimax_move(board, eval_mode, max_depth):
+    best_move = random.choice(list(board.legal_moves))
+    board.push(best_move)
+    best_value = minimax(board, eval_mode, max_depth, board.turn, -inf, inf)
+    board.pop()
+    for move in board.legal_moves:
+        board.push(move)
+        value = minimax(board, eval_mode, max_depth, board.turn, -inf, inf)
+        board.pop()
+        if (board.turn == chess.WHITE and value > best_value) or (board.turn == chess.BLACK and value < best_value):
+            best_value = value
+            best_move = move
+    return best_move
+
+
+def minimax(board, eval_mode, depth_left, side, alpha, beta):
+
+    if depth_left == 0 or board.is_game_over():
+        return evaluation_mode[eval_mode](board)
+
+    if board.turn is not side:  # check if this is right
+        max_evaluation = -inf
+        for move in board.legal_moves:
+            board.push(move)
+            evaluation = minimax(board, eval_mode, depth_left - 1, side, alpha, beta)
+            board.pop()
+            max_evaluation = max(max_evaluation, evaluation)
+            alpha = max(alpha, evaluation)
+            if beta <= alpha:
+                return max_evaluation
+        return max_evaluation
+
+    else:
+        min_evaluation = inf
+        for move in board.legal_moves:
+            board.push(move)
+            evaluation = minimax(board, eval_mode, depth_left - 1, side, alpha, beta)
+            board.pop()
+            min_evaluation = min(min_evaluation, evaluation)
+            beta = min(beta, evaluation)
+            if beta <= alpha:
+                return min_evaluation
+        return min_evaluation
+
+
 def greedy_move(board, eval_mode, max_depth):
     """
     Chooses the greedy move, i. e, the one that will maximize the evaluation function next ply.
@@ -143,13 +188,13 @@ def greedy_move(board, eval_mode, max_depth):
     :rtype: chess.Move.
     """
     best_move = random.choice(list(board.legal_moves))
-    test_board = board.copy()
-    test_board.push_uci(best_move.uci())
-    best_value = evaluation_mode[eval_mode](test_board)
+    board.push(best_move)
+    best_value = evaluation_mode[eval_mode](board)
+    board.pop()
     for move in board.legal_moves:
-        test_board = board.copy()
-        test_board.push_uci(move.uci())
-        value = evaluation_mode[eval_mode](test_board)
+        board.push(move)
+        value = evaluation_mode[eval_mode](board)
+        board.pop()
         if (board.turn == chess.WHITE and value > best_value) or (board.turn == chess.BLACK and value < best_value):
             best_value = value
             best_move = move
@@ -160,7 +205,9 @@ HUMAN_MOVE = 0
 RANDOM_MOVE = 1
 ALPHA_BETA_MOVE = 2
 GREEDY_MOVE = 3
+MINIMAX_MOVE = 4
 
 selection_mode = {HUMAN_MOVE: human_move, RANDOM_MOVE: random_move,
                   ALPHA_BETA_MOVE: alpha_beta_prunning,
-                  GREEDY_MOVE: greedy_move}
+                  GREEDY_MOVE: greedy_move,
+                  MINIMAX_MOVE: minimax_move}
