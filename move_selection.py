@@ -66,6 +66,39 @@ def random_move(board, eval_mode, max_depth):
     return random.choice(list(board.legal_moves))
 
 
+def quiesce(board, eval_mode, alpha, beta):
+    """
+    Does Quiescence Search at the leaf node so the AI only evaluates quiet positions,
+    i. e., when no captures happen. Mitigates the Horizon Effect.
+
+    :param board: current chess board.
+    :type board: chess.Board.
+    :param alpha: lower bound scenario for the agent.
+    :type alpha: float.
+    :param beta: upper bound scenario for the agent's opponent.
+    :type beta: flotat.
+    :param depth_left: the depth left to reach the maximum depth.
+    :type depth_left: int.
+    :return: value for the state.
+    :rtype: float.
+    """
+    if board.turn == chess.WHITE:
+        current_eval = evaluation_mode[eval_mode](board)
+    else:
+        current_eval = -evaluation_mode[eval_mode](board)
+    if current_eval >= beta :
+        return beta
+    alpha = max(alpha, current_eval)
+    for move in board.legal_moves:
+        if board.is_capture(move):
+            board.push(move)
+            value = -quiesce(board, eval_mode, -beta, -alpha)
+            board.pop()
+            if value >= beta:
+                return beta
+            alpha = max(alpha, value)  
+    return alpha
+
 def negamax(board, eval_mode, alpha, beta, depth_left):
     """
     Uses the Negamax algorithm with alpha-beta pruning to find the best value of the position in the worst case scenario.
@@ -82,10 +115,7 @@ def negamax(board, eval_mode, alpha, beta, depth_left):
     :rtype: float.
     """
     if depth_left <= 0 or board.is_game_over():
-        if board.turn == chess.WHITE:
-            return evaluation_mode[eval_mode](board)
-        else:
-            return -evaluation_mode[eval_mode](board)
+        return quiesce(board, eval_mode, alpha, beta)
     value = -inf
     for move in board.legal_moves:
         board.push(move)

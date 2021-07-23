@@ -5,13 +5,15 @@ import game_logic
 import time
 import numpy as np
 
+MOVE_MODE = game_logic.ALPHA_BETA_MOVE
+EVAL_MODE = game_logic.MATERIAL_EVAL
 
 def play_puzzle(fen, moves):
     board = chess.Board(fen)
     move_number = 0
     moves_made = 0
     misses = 0
-    player = game_logic.ChessPlayer(board.turn, game_logic.GREEDY_MOVE, game_logic.STOCKFISH_EVAL)
+    player = game_logic.ChessPlayer(board.turn, MOVE_MODE, EVAL_MODE)
     while move_number < len(moves):
         next_move = chess.Move.from_uci(moves[move_number])
         board.push(next_move)
@@ -30,9 +32,9 @@ FEN = 1
 MOVES = 2
 
 # Number of path plannings used in the Monte Carlo analysis
-num_iterations = 1
+# num_iterations = 1
 # num_iterations = 10
-# num_iterations = 100  # Monte Carlo
+num_iterations = 100  # Monte Carlo
 
 with open('puzzles/puzzles.csv', mode='r') as db:
     csv_reader = csv.reader(db, delimiter=',')
