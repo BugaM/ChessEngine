@@ -83,7 +83,7 @@ class ChessPlayer:
 
             
 player1 = ChessPlayer(PLAYER_RANDOM, HUMAN_MOVE, MATERIAL_EVAL)
-player2 = ChessPlayer(player1.get_oponent_color(), ALPHA_BETA_MOVE, MATERIAL_EVAL)
+player2 = ChessPlayer(player1.get_oponent_color(), MINIMAX_MOVE, MATERIAL_EVAL)
 
 
 def make_move(board, screen):
