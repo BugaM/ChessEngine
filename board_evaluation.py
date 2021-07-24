@@ -1,5 +1,4 @@
 import chess
-from game_logic import max_depth
 from chess.engine import SimpleEngine
 from constants import piece_value, outcome_value, chess_pieces
 
@@ -26,7 +25,7 @@ def material_evaluation(board):
     return evaluation
 
 
-def stockfish_evaluation(board, depth=max_depth - 1):
+def stockfish_evaluation(board, depth=4):
     """
     Evaluates advantage based on stockfish.
 
