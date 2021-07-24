@@ -11,7 +11,12 @@ def play_puzzle(fen, moves):
     move_number = 0
     moves_made = 0
     misses = 0
+
+    # Player settings
     player = game_logic.ChessPlayer(board.turn, game_logic.ALPHA_BETA_MOVE, game_logic.MATERIAL_EVAL)
+    # player = game_logic.ChessPlayer(board.turn, game_logic.GREEDY_MOVE, game_logic.STOCKFISH_EVAL)
+    # player = game_logic.ChessPlayer(board.turn, game_logic.RANDOM_MOVE, game_logic.MATERIAL_EVAL)
+
     while move_number < len(moves):
         next_move = chess.Move.from_uci(moves[move_number])
         board.push(next_move)
