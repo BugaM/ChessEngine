@@ -61,6 +61,8 @@ def selec_setting_str(player_setting_selec):
         return "Alpha-Beta AI"
     elif player_setting_selec == game_logic.GREEDY_MOVE:
         return "Greedy AI"
+    elif player_setting_selec == game_logic.MINIMAX_MOVE:
+        return "Minimax AI"
 
 
 def eval_setting_str(player_setting_selec, eval_setting):

@@ -30,8 +30,8 @@ FEN = 1
 MOVES = 2
 
 # Number of path plannings used in the Monte Carlo analysis
-# num_iterations = 1
-num_iterations = 10
+num_iterations = 1
+# num_iterations = 10
 # num_iterations = 100  # Monte Carlo
 
 with open('puzzles/puzzles.csv', mode='r') as db:

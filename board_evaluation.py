@@ -25,7 +25,7 @@ def material_evaluation(board):
     return evaluation
 
 
-def stockfish_evaluation(board, depth=5):
+def stockfish_evaluation(board, depth=4):
     """
     Evaluates advantage based on stockfish.
 

@@ -13,7 +13,7 @@ PLAYER_RANDOM = 2
 running = [True]
 white_player_human = False
 black_player_human = False
-max_depth = 3
+max_depth = 4
 
 # Help to change options
 MIN_COLOR = PLAYER_BLACK
@@ -23,7 +23,7 @@ MIN_EVAL = MATERIAL_EVAL
 MAX_EVAL = STOCKFISH_EVAL
 
 MIN_SELEC = HUMAN_MOVE
-MAX_SELEC = GREEDY_MOVE
+MAX_SELEC = MINIMAX_MOVE
 
 class ChessPlayer:
     """
@@ -78,8 +78,8 @@ class ChessPlayer:
         :rtype: chess.Move.
         """
         if self.move_selec == HUMAN_MOVE:
-            return selection_mode[self.move_selec](board, self.eval_func, max_depth, screen)
-        return selection_mode[self.move_selec](board, self.eval_func, max_depth)
+            return selection_mode[self.move_selec](board, self.eval_func, max_depth - 1, screen)
+        return selection_mode[self.move_selec](board, self.eval_func, max_depth - 1)
 
             
 player1 = ChessPlayer(PLAYER_RANDOM, HUMAN_MOVE, MATERIAL_EVAL)

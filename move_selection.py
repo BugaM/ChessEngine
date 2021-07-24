@@ -149,7 +149,7 @@ def minimax(board, eval_mode, depth_left, side, alpha, beta):
     if depth_left == 0 or board.is_game_over():
         return evaluation_mode[eval_mode](board)
 
-    if board.turn is side:
+    if board.turn is chess.WHITE:
         max_evaluation = -inf
         for move in board.legal_moves:
             board.push(move)
@@ -158,7 +158,7 @@ def minimax(board, eval_mode, depth_left, side, alpha, beta):
             max_evaluation = max(max_evaluation, evaluation)
             alpha = max(alpha, evaluation)
             if beta <= alpha:
-                return max_evaluation
+                break
         return max_evaluation
 
     else:
@@ -170,7 +170,7 @@ def minimax(board, eval_mode, depth_left, side, alpha, beta):
             min_evaluation = min(min_evaluation, evaluation)
             beta = min(beta, evaluation)
             if beta <= alpha:
-                return min_evaluation
+                break
         return min_evaluation
 
 
