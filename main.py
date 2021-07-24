@@ -23,5 +23,6 @@ def start_game():
         game_input(board, screen)
     pygame.quit()
 
+
 if __name__ == "__main__":
         start_game()
