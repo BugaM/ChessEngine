@@ -3,6 +3,11 @@ This is a project done for Aeronautics Institute of Technology's (ITA) CT-213 di
 of authors:  
 Eric Guerra Ribeiro  
 Marcelo Buga Martins da Silva
+
+## Testing:
+
+This project has been tested in Ubuntu 20.04 and may not work in Windows.
+
 ## Usage:
 ### Main:
 
