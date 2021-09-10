@@ -1,4 +1,4 @@
-from move_selection import HUMAN_MOVE, RANDOM_MOVE, ALPHA_BETA_MOVE, GREEDY_MOVE, MINIMAX_MOVE
+from move_selection import HUMAN_MOVE, RANDOM_MOVE, ALPHA_BETA_MOVE, GREEDY_MOVE
 from move_selection import selection_mode
 from board_evaluation import MATERIAL_EVAL, STOCKFISH_EVAL
 import chess
@@ -23,7 +23,8 @@ MIN_EVAL = MATERIAL_EVAL
 MAX_EVAL = STOCKFISH_EVAL
 
 MIN_SELEC = HUMAN_MOVE
-MAX_SELEC = MINIMAX_MOVE
+MAX_SELEC = GREEDY_MOVE
+
 
 class ChessPlayer:
     """
@@ -44,7 +45,6 @@ class ChessPlayer:
         self.color = self.get_color()
         self.move_selec = move_selec
         self.eval_func = eval_func
-    
 
     def get_color(self):
         """
@@ -54,7 +54,6 @@ class ChessPlayer:
             return random.choice([PLAYER_BLACK, PLAYER_WHITE])
         else:
             return self.color_setting
-    
 
     def get_oponent_color(self):
         """
@@ -64,7 +63,6 @@ class ChessPlayer:
             return PLAYER_WHITE
         else:
             return PLAYER_BLACK
-    
 
     def get_player_move(self, board, screen=None):
         """
@@ -83,7 +81,7 @@ class ChessPlayer:
 
             
 player1 = ChessPlayer(PLAYER_RANDOM, HUMAN_MOVE, MATERIAL_EVAL)
-player2 = ChessPlayer(player1.get_oponent_color(), MINIMAX_MOVE, MATERIAL_EVAL)
+player2 = ChessPlayer(player1.get_oponent_color(), ALPHA_BETA_MOVE, MATERIAL_EVAL)
 
 
 def make_move(board, screen):
@@ -115,6 +113,7 @@ def reset_board(board):
     player1.color = player1.get_color()
     player2.color = player1.get_oponent_color()
     board.reset()
+
 
 def increase_option(selected_player, selected_option):
     """
@@ -172,6 +171,7 @@ def decrease_option(selected_player, selected_option):
             player1.eval_func = max(player1.eval_func-1, MIN_EVAL)
         else:
             player2.eval_func = max(player2.eval_func-1, MIN_EVAL)
+
 
 def increase_depth():
     """
